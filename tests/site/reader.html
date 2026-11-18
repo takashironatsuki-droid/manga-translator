@@ -1,0 +1,10 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;background:#fff;overflow:hidden} #cv{position:fixed;left:-30px;top:70px;width:360px;height:560px}</style></head>
+<body><canvas id="cv" width="720" height="1120"></canvas>
+<script>
+const pages=['http://127.0.0.1:8802/page1.png','http://127.0.0.1:8802/page2.png'];
+let i=0; const cv=document.getElementById('cv'), g=cv.getContext('2d');
+function show(){ const im=new Image(); im.onload=()=>{ g.fillStyle=i%2?'#cde':'#fff'; g.fillRect(0,0,720,1120); g.drawImage(im,0,0,720,1120); g.fillStyle='#000'; g.font='bold 60px sans-serif'; g.fillText('PAGE '+(i%2+1),40,1080); window.drawnAt=performance.now(); }; im.src=pages[i%2]; }
+show();
+document.addEventListener('pointerup',(e)=>{ if(e.target&&e.target.id==='mgtl-host')return; i++; setTimeout(show,350); });
+</script></body></html>

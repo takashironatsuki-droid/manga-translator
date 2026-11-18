@@ -1,0 +1,17 @@
+# 签名密钥和密码：绝对不要上传
+keystore/
+*.keystore
+*.jks
+password.txt
+
+# 打包工具、下载的压缩包、打包的中间产物和安装包
+tools/
+dl/
+out/
+android-app/out/
+*.apk
+*.idsig
+
+# 检查脚本产生的截图、依赖
+tests/shots/
+node_modules/

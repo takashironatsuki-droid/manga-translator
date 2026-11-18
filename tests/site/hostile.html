@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0;background:#1b1b1f;color:#ddd;font:14px sans-serif} img,canvas{display:block;width:100%;margin:0 0 14px} p{margin:8px}</style></head>
+<body><script>
+// 模拟漫画阅读器：自己接管触摸手势，取消浏览器的默认行为，于是点按不再产生 click 事件
+for (const t of [window, document]) for (const ev of ['touchstart','touchmove','touchend']) t.addEventListener(ev, (e) => e.preventDefault(), { capture: true, passive: false });
+</script>
+<p>测试阅读页·接管触摸（本站图片 + 跨域图片 + 长条图 + 画布）</p>
+<img id="local" src="/local.png">
+<img id="p1" src="http://127.0.0.1:8802/page1.png">
+<img id="p2" src="http://127.0.0.1:8802/page2.png">
+<img id="strip" src="http://127.0.0.1:8802/strip.png">
+<img id="p3" src="http://127.0.0.1:8802/page3.png">
+<canvas id="cv" width="600" height="600"></canvas>
+<img id="small" src="http://127.0.0.1:8802/small.png" style="width:80px">
+<script>
+const g=document.getElementById('cv').getContext('2d');g.fillStyle='#ddd';g.fillRect(0,0,600,600);g.fillStyle='#fff';g.fillRect(60,48,252,96);g.fillStyle='#000';g.font='bold 30px sans-serif';g.fillText('Canvas text',80,105);
+window.pageClicks=0;document.addEventListener('click',()=>window.pageClicks++);
+</script></body></html>

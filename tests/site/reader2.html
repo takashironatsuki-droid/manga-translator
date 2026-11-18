@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;background:#fff;overflow:hidden} #cv{position:fixed;left:15px;top:70px;width:360px;height:560px}</style></head>
+<body><canvas id="cv" width="720" height="1120"></canvas>
+<script>
+let i=0; const cv=document.getElementById('cv'), g=cv.getContext('2d'); const im=new Image();
+function show(){ g.fillStyle=i%2?'#9ab':'#fff'; g.fillRect(0,0,720,1120); g.drawImage(im,i%2?60:0,i%2?80:0,720,1120); g.fillStyle='#000'; g.font='bold 60px sans-serif'; g.fillText('PAGE '+(i+1),40,1080); window.drawnAt=performance.now(); }
+im.onload=show; im.src='/local.png';
+document.addEventListener('pointerup',(e)=>{ if(e.target&&e.target.id==='mgtl-host')return; i++; setTimeout(show,350); });
+</script></body></html>

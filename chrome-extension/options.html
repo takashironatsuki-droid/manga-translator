@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>漫画图片翻译 - 设置</title>
+<style>
+  body { margin: 0; background: #f6f6f4; color: #222; font: 15px/1.6 system-ui, "Microsoft YaHei", "Hiragino Sans", sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #666; margin: 0 0 22px; }
+  section { background: #fff; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  h2 { font-size: 16px; margin: 0 0 12px; }
+  label.f { display: block; margin: 12px 0 4px; font-weight: 600; }
+  .hint { color: #777; font-size: 13px; margin: 3px 0 0; }
+  input[type=text], input[type=password], input[type=number], select, textarea {
+    width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; font: inherit; background: #fff; color: #222; }
+  textarea { min-height: 64px; resize: vertical; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .row > :first-child { flex: 1; }
+  button { padding: 8px 14px; border: 0; border-radius: 8px; font: inherit; cursor: pointer; background: #e9ecef; color: #222; white-space: nowrap; }
+  button.primary { background: #e8590c; color: #fff; font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  #result { margin-top: 10px; padding: 9px 12px; border-radius: 8px; display: none; white-space: pre-wrap; word-break: break-word; }
+  #result.ok { display: block; background: #ebfbee; border: 1px solid #b2f2bb; }
+  #result.err { display: block; background: #fff5f5; border: 1px solid #ffc9c9; }
+  #result.info { display: block; background: #f1f3f5; border: 1px solid #dee2e6; }
+  #saved { position: fixed; right: 18px; bottom: 18px; background: #2b8a3e; color: #fff; padding: 6px 12px; border-radius: 8px; opacity: 0; transition: opacity .2s; }
+  #saved.on { opacity: 1; }
+  ol { padding-left: 20px; margin: 0; }
+  a { color: #d9480f; }
+  label.c { display: flex; gap: 8px; align-items: center; margin-top: 12px; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>漫画图片翻译 · 设置</h1>
+  <p class="sub">所有设置会自动保存，只保存在你自己的浏览器里。</p>
+
+  <section>
+    <h2>第一步：连接 AI</h2>
+    <ol>
+      <li>选一家 AI 服务，去它的网站申请一个 API Key（一串密码一样的字符）。</li>
+      <li>把 Key 粘贴到下面，点「获取模型列表」，选一个<b>支持图片输入</b>的模型（选 DeepSeek 时模型会自动填好，这一步可以跳过）。</li>
+      <li>点「测试」，看到绿色提示就可以用了。</li>
+    </ol>
+
+    <label class="f" for="preset">AI 服务</label>
+    <select id="preset">
+      <option value="gemini">Google Gemini</option>
+      <option value="deepseek">DeepSeek（付费，但很便宜）</option>
+      <option value="openai">OpenAI</option>
+      <option value="claude">Claude（Anthropic，付费）</option>
+      <option value="openrouter">OpenRouter（一个 Key 可用多家模型）</option>
+      <option value="custom">自定义（任何兼容 OpenAI 格式的接口，包括本地模型）</option>
+    </select>
+    <p class="hint" id="keyHint"></p>
+
+    <label class="f" for="baseUrl">接口地址</label>
+    <input type="text" id="baseUrl" spellcheck="false" placeholder="https://.../v1">
+
+    <label class="f" for="apiKey">API Key</label>
+    <input type="password" id="apiKey" spellcheck="false" autocomplete="off" placeholder="粘贴你的 Key">
+
+    <label class="f" for="model">模型</label>
+    <div class="row">
+      <input type="text" id="model" spellcheck="false" placeholder="先点右边的按钮获取列表，或手动填写模型名">
+      <button id="listBtn">获取模型列表</button>
+    </div>
+    <select id="modelSel" style="display:none; margin-top:8px"></select>
+    <p class="hint">必须选能看图的模型（多模态 / vision）。纯文字模型会报错。每家服务的 Key 和模型会分别记住，来回切换不用重新填。</p>
+
+    <div style="margin-top:14px">
+      <button id="testBtn" class="primary">测试</button>
+    </div>
+    <div id="result"></div>
+  </section>
+
+  <section>
+    <h2>第二步：翻译设置</h2>
+    <label class="f" for="targetSel">翻译成</label>
+    <div class="row">
+      <select id="targetSel">
+        <option>简体中文</option>
+        <option>繁體中文</option>
+        <option>日本語</option>
+        <option>English</option>
+        <option>한국어</option>
+        <option value="__custom">其他（自己填）</option>
+      </select>
+      <input type="text" id="targetCustom" placeholder="例如：Español" style="display:none">
+    </div>
+
+    <label class="f" for="skipLangs">不需要翻译的语言（可留空）</label>
+    <input type="text" id="skipLangs" placeholder="例如：日语">
+    <p class="hint">填了之后，这些语言的文字会保持原样，其他语言照常翻译。</p>
+
+    <label class="f" for="displayMode">译文显示方式</label>
+    <select id="displayMode">
+      <option value="overlay">直接盖在原文位置上</option>
+      <option value="list">图上标编号，译文列在图片旁边</option>
+    </select>
+    <p class="hint">如果你用的模型定位不准、译文盖错了地方，换成第二种更好读。</p>
+
+    <label class="f" for="extraPrompt">给 AI 的额外要求（可留空）</label>
+    <textarea id="extraPrompt" placeholder="例如：人名保留原文；语气口语化一点"></textarea>
+  </section>
+
+  <section>
+    <h2>其他</h2>
+    <label class="c"><input type="checkbox" id="autoAfterClick"> 在一个网站点过一次「译」后，自动翻译该网站后面的图片</label>
+    <p class="hint">开启自动的网站会被记住，下一话、下一页也会自动翻译。想关掉时，点图片上的「自动：开」按钮，或点插件图标取消勾选。</p>
+    <label class="c"><input type="checkbox" id="hoverButton"> 鼠标移到图片上时显示「译」按钮</label>
+    <label class="f" for="rpm">每分钟最多发给 AI 多少次请求（0 = 不限制）</label>
+    <input type="number" id="rpm" min="0" max="600" step="1">
+    <p class="hint">免费的 Key 每分钟次数有限，超过就会报"请求太频繁"。数字越小越不容易报错，但自动翻译会排队更久。付费的 Key 可以填 0。</p>
+    <label class="f" for="minSize">小于这个尺寸的图片不显示按钮（像素）</label>
+    <input type="number" id="minSize" min="60" max="1000" step="10">
+  </section>
+</main>
+<div id="saved">已保存</div>
+<script src="defaults.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

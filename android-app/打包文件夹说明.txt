@@ -1,0 +1,27 @@
+漫画翻译 App —— 打包文件夹说明
+================================
+
+这个文件夹（D:\manga-app-build）里的东西：
+
+  manga-translator-x.y.z.apk   做好的安装包（数字最大的是最新版），传到安卓手机上安装
+  project\                     App 的源文件
+      src\...\MainActivity.java    App 本体（浏览器外壳、Key 设置、网络、截屏）
+      assets\userscript.js         网页里的翻译功能（和浏览器用的脚本是同一份）
+      assets\prelude.js            把翻译脚本接到 App 上的一小段代码
+      assets\start.html            App 的起始页
+      build.ps1                    打包脚本
+  tools\                       打包工具（JDK、Android build-tools、android.jar），免安装
+  dl\                          下载下来的原始压缩包，可以删
+  keystore\                    给安装包签名用的密钥。以后想出新版本并直接覆盖安装，必须保留它
+
+重新打包：
+  powershell -NoProfile -ExecutionPolicy Bypass -File D:\manga-app-build\project\build.ps1
+
+这些工具没有安装进系统，也没有改任何系统设置。
+以后不需要了，把整个 D:\manga-app-build 文件夹删掉即可（想保留更新能力就留下 keystore 和 project）。
+
+打包工具的来源：
+  JDK            Eclipse Temurin 17（adoptium.net），下载后核对过 SHA-256
+  build-tools    Android SDK Build-Tools 34（dl.google.com），下载后核对过 SHA-1
+  android.jar    Android SDK Platform 34（dl.google.com），下载后核对过 SHA-1
+  后两者受 Android SDK 许可协议约束：https://developer.android.com/studio/terms

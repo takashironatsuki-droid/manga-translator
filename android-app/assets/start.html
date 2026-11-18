@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>漫画翻译</title>
+<style>
+  body { margin: 0; padding: 22px 18px 40px; background: #f6f6f4; color: #222; font: 16px/1.6 system-ui, sans-serif; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #777; margin: 0 0 18px; font-size: 14px; }
+  .card { background: #fff; border-radius: 12px; padding: 14px 16px; margin: 0 0 14px; }
+  ol { margin: 0; padding-left: 22px; }
+  li { margin: 0 0 8px; }
+  b { color: #d9480f; }
+  input { width: 100%; box-sizing: border-box; padding: 11px; border: 1px solid #ccc; border-radius: 8px; font: inherit; }
+  button, a.btn { display: block; width: 100%; box-sizing: border-box; margin-top: 10px; padding: 11px; border: 0; border-radius: 8px;
+    background: #e8590c; color: #fff; font: 600 16px/1.3 system-ui, sans-serif; text-align: center; text-decoration: none; }
+  a.btn.gray { background: #e9ecef; color: #222; font-weight: 400; word-break: break-all; }
+  #last { display: none; }
+</style>
+</head>
+<body>
+  <h1>漫画翻译</h1>
+  <p class="sub">打开漫画网站，用 AI 把图片里的文字翻译出来。</p>
+
+  <div class="card" id="last">
+    <div>上次看到这里：</div>
+    <a class="btn gray" id="lastLink" href="#"></a>
+  </div>
+
+  <div class="card">
+    <input id="url" type="url" placeholder="输入漫画网站的网址" autocapitalize="off" autocomplete="off">
+    <button id="go">打开</button>
+  </div>
+
+  <div class="card">
+    <ol>
+      <li>第一次用：点右上角<b>「菜单」→「AI 设置」</b>，填上你的 API Key（只需要一次）。</li>
+      <li>打开漫画网站，翻到有图片的页面。</li>
+      <li>点屏幕右侧悬浮的<b>「译」</b>：
+        「翻译屏幕上的图片」只翻当前看到的；「自动翻译本网站」开启后滚动到哪翻到哪。<br>
+        有些网站的漫画读不到内容：这时 App 会自动改成截屏翻译整个屏幕，翻页后旧译文自动消失；开着「自动翻译」的话，新的一页停稳后会自动翻译。<br>
+        如果某个网站自动翻译不正常，开着自动时点一次「翻译整个屏幕」，这个网站以后就固定用整屏方式。</li>
+      <li>第一次用建议先点<b>「译」→「设置」→「测试」</b>，看到「成功」再开始看。</li>
+      <li>常看的网站可以点<b>「菜单」→「收藏本页」</b>。</li>
+    </ol>
+  </div>
+
+  <div class="card" style="font-size:14px;color:#666">
+    每翻译一张图会调用一次 AI，用的是你自己 Key 的额度。读不到内容的图片，App 会改用截屏的方式翻译屏幕上看得见的部分。
+  </div>
+
+<script>
+(function () {
+  function open(u) {
+    u = (u || '').trim();
+    if (!u) return;
+    if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+    location.href = u;
+  }
+  document.getElementById('go').addEventListener('click', function () { open(document.getElementById('url').value); });
+  document.getElementById('url').addEventListener('keydown', function (e) { if (e.key === 'Enter') open(this.value); });
+  try {
+    var last = decodeURIComponent((location.hash || '').slice(1));
+    if (/^https?:\/\//i.test(last)) {
+      var a = document.getElementById('lastLink');
+      a.href = last;
+      a.textContent = last.length > 70 ? last.slice(0, 70) + '…' : last;
+      document.getElementById('last').style.display = 'block';
+    }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

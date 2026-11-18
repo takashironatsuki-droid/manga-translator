@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  body { width: 270px; margin: 0; padding: 14px; font: 14px/1.5 system-ui, "Microsoft YaHei", "Hiragino Sans", sans-serif; color: #222; background: #fff; }
+  h1 { font-size: 15px; margin: 0 0 10px; }
+  button { display: block; width: 100%; margin: 0 0 8px; padding: 9px 10px; border: 0; border-radius: 8px; font: inherit; cursor: pointer; background: #f1f3f5; color: #222; }
+  button.primary { background: #e8590c; color: #fff; font-weight: 600; }
+  button:hover { filter: brightness(.95); }
+  button:disabled { opacity: .5; cursor: default; }
+  label { display: flex; align-items: center; gap: 6px; margin: 6px 0; cursor: pointer; }
+  #warn { display: none; background: #fff4e6; border: 1px solid #ffd8a8; border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; }
+  #status { color: #666; font-size: 13px; min-height: 20px; margin-bottom: 8px; }
+  .tip { color: #888; font-size: 12px; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <h1>漫画图片翻译 <span id="ver" style="font-weight:400;color:#999;font-size:12px"></span></h1>
+  <div id="warn">还没有设置 AI 接口，暂时不能翻译。请先点下面的「设置」。</div>
+  <div id="status">正在检查页面…</div>
+  <button id="all" class="primary">翻译本页所有图片</button>
+  <button id="clear">清除本页译文</button>
+  <label><input type="checkbox" id="auto"> 在这个网站自动翻译（滚动到哪翻到哪）</label>
+  <label><input type="checkbox" id="hover"> 鼠标移到图片上时显示「译」按钮</label>
+  <button id="settings">设置</button>
+  <div class="tip">也可以在图片上点右键 →「翻译这张图片」。每翻译一张图会调用一次 AI，会消耗你的 API 额度。</div>
+  <script src="defaults.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
